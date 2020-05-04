@@ -2,16 +2,34 @@ GET http://localhost:8080/api/messages
 
 ###
 POST http://localhost:8080/api/messages
-Authorization: Basic fred fred
+Authorization: Basic yohan yohan
 Content-Type: application/json
 
 {"texte": "Messaje"}
+
+###
+POST http://localhost:8080/api/messages
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{"texte": "Msg admin"}
 
 ###
 GET http://localhost:8080/api/messages/2
 
 ###
 DELETE http://localhost:8080/api/messages/1
+Authorization: Basic Jotaro Dolphin
+
+###
+POST http://localhost:8080/api/utilisateurs
+Authorization: Basic admin admin
+Content-Type: application/json
+
+{ "login": "yohan", "password": "yohan", "isAdmin": true }
+
+###
+GET http://localhost:8080/api/utilisateurs/Jotaro
 Authorization: Basic admin admin
 
 ###
