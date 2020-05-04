@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +20,11 @@ public class MessageController {
     private final AtomicLong counter = new AtomicLong(1L);  //Facilite l'incrémentation du compteur
 
     @PostMapping("/messages")
-    public ResponseEntity<Message> create(@RequestBody Message message) {
+    public ResponseEntity<Message> create(Principal principal, @RequestBody Message message) {      //Principal permet de récupéré l'utilisateur
+        String login = principal.getName();
+
         // il n'a pas d'id, juste un texte
-        Message messageRec = new Message( counter.getAndIncrement(), message.getTexte() );
+        Message messageRec = new Message( counter.getAndIncrement(), login + ": " + message.getTexte() );
         messages.add(messageRec);
 
         URI location = ServletUriComponentsBuilder
