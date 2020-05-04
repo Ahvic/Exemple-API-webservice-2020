@@ -44,7 +44,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .csrf().disable()                                                               //Enleve une fonct. génante
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/messages").permitAll()       //donne l'acces à tous le monde en GET
-                .antMatchers(HttpMethod.DELETE, "api/**").hasRole("ADMIN")      //demande le role admin pour faire un DELETE
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")      //demande le role admin pour faire un DELETE
                 .anyRequest().hasRole("USER")
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);  //empêche la création de cookies
