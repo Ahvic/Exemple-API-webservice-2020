@@ -2,7 +2,7 @@ GET http://localhost:8080/api/messages
 
 ###
 POST http://localhost:8080/api/messages
-Authorization: Basic yohan yohan
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJKb3Rhcm8iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwiZXhwIjoxNTg4Nzg0NzI1fQ.4lTfWFAzAmYBIan4OvgOIj7TEM-KesS9C7czIbf9za8
 Content-Type: application/json
 
 {"texte": "Messaje"}
@@ -23,7 +23,7 @@ Authorization: Basic Jotaro Dolphin
 
 ###
 POST http://localhost:8080/api/utilisateurs
-Authorization: Basic admin admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIlJPTEVfQURNSU4iLCJST0xFX1VTRVIiXSwiZXhwIjoxNTg4Nzg0ODQwfQ.MTm9yGRQQRmcW7DHCDN5TJy6D3D_w6dAypbU3XqSOaY
 Content-Type: application/json
 
 { "login": "yohan", "password": "yohan", "isAdmin": true }
@@ -31,5 +31,11 @@ Content-Type: application/json
 ###
 GET http://localhost:8080/api/utilisateurs/Jotaro
 Authorization: Basic admin admin
+
+###
+POST http://localhost:8080/api/login?username=Jotaro&password=Dolphin
+
+###
+POST http://localhost:8080/api/login?username=admin&password=admin
 
 ###

@@ -1,5 +1,8 @@
 package com.revision.rest.revisiondemosecurity.Config;
 
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import javax.crypto.SecretKey;
+
 @Configuration
 @EnableWebSecurity                                              //Obligatoire !
 @EnableGlobalMethodSecurity(prePostEnabled = true)              //active les Pre et post conditions
@@ -31,6 +36,9 @@ public class Security extends WebSecurityConfigurerAdapter {
     }
     */
 
+    @Autowired
+    private JwtTokens jwtTokens;
+
     @Bean                                                       //Utilisé partout, permet d'être retrouvé
     @Override
     protected UserDetailsService userDetailsService() {         //Même chose que configure(AuthenticationManagerBuilder) mais incompatible entre elle
@@ -41,17 +49,23 @@ public class Security extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()                                                               //Enleve une fonct. génante
+                .addFilter(new JwtAuthentificationFilter(authenticationManager(), jwtTokens))              //filtre d'authentification, on génère un token
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtTokens))    //filtre qui vérifie l'autorisation depuis le token
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/messages").permitAll()       //donne l'acces à tous le monde en GET
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasRole("ADMIN")      //demande le role admin pour faire un DELETE
                 .antMatchers(HttpMethod.POST, "/api/utilisateurs").hasRole("ADMIN")     //Seul un admin peut créer un utilisateur
                 .anyRequest().hasRole("USER")
-                .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);  //empêche la création de cookies
     }
 
     @Bean                                                       //Permet d'être retrouvé de partout, permet que tout le modn eutilise le même encodeur
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecretKey getSecretKey(){
+        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 }
