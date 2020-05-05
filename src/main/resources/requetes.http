@@ -1,0 +1,12 @@
+GET http://localhost:8080/utilisateurs/fred/messages
+
+###
+POST http://localhost:8080/utilisateurs/fred/messages
+Content-Type: application/json
+
+{"texte":"encore moi !"}
+
+###
+GET http://localhost:8080/utilisateurs/fred/
+
+###
